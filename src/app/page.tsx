@@ -60,7 +60,7 @@ export default function Home() {
         <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
           <section className="rounded-xl border border-zinc-200 bg-white p-5">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-zinc-900">My courses</h2>
+              <h2 className="text-lg font-semibold text-zinc-900">My Courses</h2>
               <span className="text-sm text-zinc-500">{courses.length} courses</span>
             </div>
 

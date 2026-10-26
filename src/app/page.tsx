@@ -1,69 +1,110 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useState } from "react";
+
+const stats = [
+  { label: "Average grade", value: "88.4%", note: "+2.1 points this month" },
+  { label: "Attendance", value: "92%", note: "On track this term" },
+  { label: "Due this week", value: "4", note: "2 high priority" },
+];
+
+const courses = [
+  { title: "Data Structures", code: "CS 201", teacher: "Prof. James Lee", grade: 91, color: "bg-blue-500" },
+  { title: "UI/UX Design", code: "DES 210", teacher: "Maya Patel", grade: 87, color: "bg-violet-500" },
+  { title: "Statistics", code: "MTH 140", teacher: "Dr. Olivia West", grade: 82, color: "bg-emerald-500" },
+  { title: "Research Methods", code: "SOC 205", teacher: "Ali Morgan", grade: 93, color: "bg-amber-500" },
+];
+
+const assignments = [
+  { subject: "CS 201", title: "Binary Tree Lab", due: "Today, 11:59 PM", status: "Pending" },
+  { subject: "SOC 205", title: "Survey Design Draft", due: "Tue, Oct 27", status: "Pending" },
+  { subject: "DES 210", title: "Moodboard Review", due: "Wed, Oct 28", status: "In review" },
+  { subject: "MTH 140", title: "Probability Quiz 3", due: "Fri, Oct 30", status: "Pending" },
+];
 
 export default function Home() {
+  const [greeting, setGreeting] = useState("Welcome back");
+  const [date, setDate] = useState("");
+
+  useEffect(() => {
+    const now = new Date();
+    const hour = now.getHours();
+
+    setGreeting(hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening");
+    setDate(now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" }));
+  }, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="min-h-screen bg-zinc-100 p-4 text-zinc-900 sm:p-8">
+      <div className="mx-auto max-w-6xl space-y-6">
+        <header>
+          <div>
+            <p className="text-sm text-zinc-500">{date || "Student Portal"}</p>
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
+              {greeting}, Ni'mah
+            </h1>
+            <p className="mt-1 text-sm text-zinc-500">Here’s your study overview.</p>
+          </div>
+        </header>
+
+        <section className="grid gap-4 sm:grid-cols-3" aria-label="Student summary">
+          {stats.map((stat) => (
+            <article key={stat.label} className="rounded-xl border border-zinc-200 bg-white p-5">
+              <p className="text-sm text-zinc-500">{stat.label}</p>
+              <p className="mt-2 text-3xl font-semibold tabular-nums text-zinc-900">{stat.value}</p>
+              <p className="mt-1 text-sm text-zinc-500">{stat.note}</p>
+          </article>
+          ))}
+        </section>
+
+        <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+          <section className="rounded-xl border border-zinc-200 bg-white p-5">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-zinc-900">My courses</h2>
+              <span className="text-sm text-zinc-500">{courses.length} courses</span>
+            </div>
+
+            <div className="space-y-3">
+              {courses.map((course) => (
+                <article key={course.code} className="rounded-lg border border-zinc-200 bg-zinc-50 p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-xs font-medium text-zinc-500">
+                        <span className={`mr-2 inline-block h-2 w-2 rounded-full ${course.color}`} />
+                        {course.code}
+                      </p>
+                      <h3 className="mt-1 font-semibold text-zinc-900">{course.title}</h3>
+                      <p className="mt-0.5 text-sm text-zinc-500">{course.teacher}</p>
+                    </div>
+                    <p className="shrink-0 text-lg font-semibold tabular-nums text-zinc-900">{course.grade}%</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="rounded-xl border border-zinc-200 bg-white p-5">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-zinc-900">Upcoming assignments</h2>
+              <span className="text-sm text-zinc-500">{assignments.length} due</span>
+            </div>
+
+            <ul className="divide-y divide-zinc-200">
+              {assignments.map((assignment) => (
+                <li key={assignment.title} className="flex items-start justify-between gap-3 py-4 first:pt-1 last:pb-1">
+                  <div className="min-w-0">
+                    <p className="font-medium text-zinc-900">{assignment.title}</p>
+                    <p className="mt-1 text-sm text-zinc-500">{assignment.subject} · {assignment.due}</p>
+                  </div>
+                  <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${assignment.status === "Pending" ? "bg-amber-100 text-amber-800" : "bg-blue-100 text-blue-800"}`}>
+                    {assignment.status}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }

@@ -35,74 +35,68 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_#4f46e5_0%,_#0f172a_28%,_#020817_100%)] p-4 text-slate-100 sm:p-8">
+    <main className="min-h-screen bg-zinc-100 p-4 text-zinc-900 sm:p-8">
       <div className="mx-auto max-w-6xl space-y-6">
-        <header className="rounded-3xl border border-violet-500/30 bg-slate-950/60 p-5 shadow-[0_20px_50px_rgba(79,70,229,0.24)] backdrop-blur-sm sm:p-6">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-medium tracking-[0.2em] text-violet-300 uppercase">{date || "Student Portal"}</p>
-              <h1 className="mt-2 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                {greeting}, Ni'mah
-              </h1>
-              <p className="mt-1 text-sm text-slate-300">Here’s your study overview.</p>
-            </div>
-            <div className="flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-3 py-1.5 text-sm text-violet-100">
-              <span className="h-2 w-2 rounded-full bg-emerald-400" />
-              3 goals ahead
-            </div>
+        <header className="rounded-[28px] border border-violet-200 bg-gradient-to-r from-violet-100 via-indigo-50 to-sky-50 p-5 shadow-[0_10px_30px_rgba(139,92,246,0.08)] sm:p-6">
+          <div>
+            <p className="text-sm font-medium tracking-[0.18em] text-violet-700 uppercase">{date || "Student Portal"}</p>
+            <h1 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
+              {greeting}, Ni'mah
+            </h1>
+            <p className="mt-1 text-sm text-zinc-600">Here’s your study overview.</p>
           </div>
         </header>
 
         <section className="grid gap-4 sm:grid-cols-3" aria-label="Student summary">
           {stats.map((stat) => (
-            <article key={stat.label} className="rounded-2xl border border-slate-700/80 bg-slate-900/70 p-5 shadow-[0_12px_28px_rgba(15,23,42,0.35)]">
-              <p className="text-sm text-slate-400">{stat.label}</p>
-              <p className="mt-2 text-3xl font-semibold tabular-nums text-white">{stat.value}</p>
-              <p className="mt-1 text-sm text-slate-300">{stat.note}</p>
+            <article key={stat.label} className="rounded-xl border border-zinc-200 bg-white p-5">
+              <p className="text-sm text-zinc-500">{stat.label}</p>
+              <p className="mt-2 text-3xl font-semibold tabular-nums text-zinc-900">{stat.value}</p>
+              <p className="mt-1 text-sm text-zinc-500">{stat.note}</p>
             </article>
           ))}
         </section>
 
         <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-          <section className="rounded-3xl border border-slate-700/80 bg-slate-900/70 p-5 shadow-[0_12px_28px_rgba(15,23,42,0.35)]">
+          <section className="rounded-xl border border-zinc-200 bg-white p-5">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-white">My Courses</h2>
-              <span className="rounded-full bg-violet-500/15 px-2.5 py-1 text-sm font-medium text-violet-200">{courses.length} courses</span>
+              <h2 className="text-lg font-semibold text-zinc-900">My Courses</h2>
+              <span className="text-sm text-zinc-500">{courses.length} courses</span>
             </div>
 
             <div className="space-y-3">
               {courses.map((course) => (
-                <article key={course.code} className="rounded-2xl border border-slate-700/80 bg-slate-950/60 p-4 transition-all duration-200 hover:border-violet-400/40 hover:bg-slate-800/80">
+                <article key={course.code} className="rounded-lg border border-zinc-200 bg-zinc-50 p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <p className="flex items-center text-xs font-medium text-slate-400">
-                        <span className={`mr-2 inline-block h-2.5 w-2.5 rounded-full ${course.color}`} />
+                      <p className="text-xs font-medium text-zinc-500">
+                        <span className={`mr-2 inline-block h-2 w-2 rounded-full ${course.color}`} />
                         {course.code}
                       </p>
-                      <h3 className="mt-1 font-semibold text-white">{course.title}</h3>
-                      <p className="mt-0.5 text-sm text-slate-400">{course.teacher}</p>
+                      <h3 className="mt-1 font-semibold text-zinc-900">{course.title}</h3>
+                      <p className="mt-0.5 text-sm text-zinc-500">{course.teacher}</p>
                     </div>
-                    <p className="shrink-0 rounded-full bg-white/5 px-2.5 py-1 text-sm font-semibold tabular-nums text-violet-100 ring-1 ring-inset ring-white/10">{course.grade}%</p>
+                    <p className="shrink-0 text-lg font-semibold tabular-nums text-zinc-900">{course.grade}%</p>
                   </div>
                 </article>
               ))}
             </div>
           </section>
 
-          <section className="rounded-3xl border border-slate-700/80 bg-slate-900/70 p-5 shadow-[0_12px_28px_rgba(15,23,42,0.35)]">
+          <section className="rounded-xl border border-zinc-200 bg-white p-5">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-white">Upcoming assignments</h2>
-              <span className="rounded-full bg-slate-800 px-2.5 py-1 text-sm font-medium text-slate-200">{assignments.length} due</span>
+              <h2 className="text-lg font-semibold text-zinc-900">Upcoming assignments</h2>
+              <span className="text-sm text-zinc-500">{assignments.length} due</span>
             </div>
 
-            <ul className="divide-y divide-slate-700/80">
+            <ul className="divide-y divide-zinc-200">
               {assignments.map((assignment) => (
                 <li key={assignment.title} className="flex items-start justify-between gap-3 py-4 first:pt-1 last:pb-1">
                   <div className="min-w-0">
-                    <p className="font-medium text-white">{assignment.title}</p>
-                    <p className="mt-1 text-sm text-slate-400">{assignment.subject} · {assignment.due}</p>
+                    <p className="font-medium text-zinc-900">{assignment.title}</p>
+                    <p className="mt-1 text-sm text-zinc-500">{assignment.subject} · {assignment.due}</p>
                   </div>
-                  <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${assignment.status === "Pending" ? "bg-red-500/15 text-red-300 ring-1 ring-inset ring-red-400/30" : "bg-blue-500/15 text-blue-300 ring-1 ring-inset ring-blue-400/30"}`}>
+                  <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${assignment.status === "Pending" ? "bg-red-100 text-red-800" : "bg-blue-100 text-blue-800"}`}>
                     {assignment.status}
                   </span>
                 </li>

@@ -96,7 +96,7 @@ export default function Home() {
                     <p className="font-medium text-zinc-900">{assignment.title}</p>
                     <p className="mt-1 text-sm text-zinc-500">{assignment.subject} · {assignment.due}</p>
                   </div>
-                  <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${assignment.status === "Pending" ? "bg-amber-100 text-amber-800" : "bg-blue-100 text-blue-800"}`}>
+                  <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${assignment.status === "Pending" ? "bg-red-100 text-red-800" : "bg-blue-100 text-blue-800"}`}>
                     {assignment.status}
                   </span>
                 </li>

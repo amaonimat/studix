@@ -50,16 +50,16 @@ export const courses = [
 
 export type CourseCode = string;
 
-export const STATUS: Record<AssignmentStatus, { label: string; badge: string }> = {
-  pending: { label: "Pending", badge: "bg-amber-100 text-amber-900" },
-  review: { label: "In review", badge: "bg-emerald-100 text-emerald-800" },
-  submitted: { label: "Submitted", badge: "bg-green-700 text-white" },
+export const STATUS: Record<AssignmentStatus, { label: string; dot: string }> = {
+  pending: { label: "Pending", dot: "bg-warn" },
+  review: { label: "In review", dot: "border-2 border-accent" },
+  submitted: { label: "Submitted", dot: "bg-accent" },
 };
 
 export const PRIORITY: Record<PriorityLevel, { label: string; rank: number; text: string }> = {
-  high: { label: "High priority", rank: 0, text: "text-red-700" },
-  medium: { label: "Medium priority", rank: 1, text: "text-amber-700" },
-  low: { label: "Low priority", rank: 2, text: "text-green-700" },
+  high: { label: "High priority", rank: 0, text: "text-alert" },
+  medium: { label: "Medium priority", rank: 1, text: "text-warn" },
+  low: { label: "Low priority", rank: 2, text: "text-muted" },
 };
 
 export const FILTERS = [
@@ -73,7 +73,13 @@ export const FILTERS = [
 export type StatusFilter = (typeof FILTERS)[number]["id"];
 
 export const INPUT_CLASS =
-  "w-full rounded-lg border border-green-200 bg-white px-3 py-2 text-sm text-green-950 placeholder:text-green-600/70 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/30";
+  "w-full min-h-11 rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted focus:border-accent";
+
+export const BTN_PRIMARY =
+  "inline-flex min-h-11 items-center justify-center rounded-lg bg-accent px-4 text-sm font-medium text-white transition-colors hover:bg-accent-hover";
+
+export const BTN_SECONDARY =
+  "inline-flex min-h-11 items-center justify-center rounded-lg border border-line bg-surface px-4 text-sm font-medium text-ink transition-colors hover:bg-tint";
 
 export const isAssignmentStatus = (value: unknown): value is AssignmentStatus =>
   value === "pending" || value === "review" || value === "submitted";

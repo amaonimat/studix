@@ -241,8 +241,8 @@ export default function Home() {
   const filtersActive = statusFilter !== "all" || courseFilter !== "all" || query.trim() !== "";
 
   return (
-    <main className="min-h-svh bg-[#f5f7f4] px-4 py-5 text-green-950 sm:px-6 sm:py-8 lg:px-8">
-      <div className="mx-auto max-w-7xl space-y-5 sm:space-y-7">
+    <main className="min-h-svh bg-paper px-4 py-6 text-ink sm:px-8 sm:py-12">
+      <div className="mx-auto max-w-6xl space-y-8 sm:space-y-12">
         <DashboardOverview
           greeting={greeting}
           date={date}

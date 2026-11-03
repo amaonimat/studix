@@ -34,49 +34,57 @@ export default function DashboardOverview({
 }) {
   return (
     <>
-      <header className="rounded-2xl border border-green-100 bg-white p-5 sm:rounded-3xl sm:p-8">
-        <p className="text-xs font-semibold tracking-[0.14em] text-green-700 uppercase sm:text-sm">{date || "Student Portal"}</p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-green-950 sm:text-4xl">
+      <header className="pt-2 sm:pt-6">
+        <h1 className="text-4xl font-medium tracking-[-0.025em] text-ink sm:text-5xl">
           {greeting}, Ni&apos;mah
         </h1>
-        <p className="mt-1 text-sm text-green-800">Here’s your study overview.</p>
+        <p className="mt-3 text-base text-muted">{date || "Student portal"}</p>
       </header>
 
-      <section className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4 lg:grid-cols-3" aria-label="Student summary">
+      <section
+        aria-label="Student summary"
+        className="grid divide-y divide-line border-y border-line sm:grid-cols-3 sm:divide-x sm:divide-y-0"
+      >
         {stats.map((stat) => {
           const body = (
             <>
-              <p className="text-sm text-green-700">{stat.label}</p>
-              <p className="mt-2 text-3xl font-semibold tabular-nums text-green-800">{stat.value}</p>
-              <p className="mt-1 text-sm text-green-700">{stat.note}</p>
+              <span className="block text-sm text-muted">{stat.label}</span>
+              <span
+                className={`mt-2 block text-4xl font-medium tabular-nums tracking-tight ${
+                  stat.action ? "text-accent" : "text-ink"
+                }`}
+              >
+                {stat.value}
+              </span>
+              <span className="mt-1 block text-sm text-muted">{stat.note}</span>
             </>
           );
+          const cell = "block py-5 text-left sm:px-6 sm:first:pl-0 sm:last:pr-0";
           return stat.action ? (
-            <button
-              key={stat.label}
-              type="button"
-              onClick={stat.action}
-              className="min-h-28 rounded-xl border border-green-200 bg-white p-4 text-left transition-colors hover:border-green-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 min-[420px]:col-span-2 sm:p-5 lg:col-span-1"
-            >
+            <button key={stat.label} type="button" onClick={stat.action} className={`group ${cell}`}>
               {body}
-              <span className="mt-2 inline-block text-sm font-medium text-green-800 underline">Show pending work</span>
+              <span className="mt-2 block text-sm font-medium text-accent underline-offset-4 group-hover:underline">
+                Show pending work
+              </span>
             </button>
           ) : (
-            <article key={stat.label} className="min-h-28 rounded-xl border border-green-100 bg-white p-4 sm:p-5">
+            <div key={stat.label} className={cell}>
               {body}
-            </article>
+            </div>
           );
         })}
       </section>
 
-      <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] xl:gap-6">
-        <section className="min-w-0 rounded-xl border border-green-100 bg-white p-4 sm:p-5">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+      <div className="grid min-w-0 gap-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:items-start lg:gap-12">
+        <div className="min-w-0">{children}</div>
+
+        <section className="min-w-0">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-3">
             <div className="flex items-baseline gap-3">
-              <h2 className="text-lg font-semibold text-green-950">My Courses</h2>
-              <span className="text-sm text-green-700">{courses.length} courses</span>
+              <h2 className="text-lg font-semibold text-ink">My courses</h2>
+              <span className="text-sm text-muted">{courses.length}</span>
             </div>
-            <label className="flex min-w-0 items-center gap-2 text-sm text-green-800">
+            <label className="flex min-w-0 items-center gap-2 text-sm text-muted">
               <span className="shrink-0">Sort by</span>
               <select
                 value={courseSort}
@@ -84,7 +92,7 @@ export default function DashboardOverview({
                   const value = event.target.value;
                   if (value === "grade-desc" || value === "grade-asc" || value === "name") onCourseSortChange(value);
                 }}
-                className="min-h-11 max-w-full rounded-lg border border-green-200 bg-white px-3 py-2 text-sm text-green-950 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/30"
+                className="min-h-10 max-w-full rounded-lg border border-line bg-surface px-2.5 py-1.5 text-sm text-ink focus:border-accent"
               >
                 <option value="grade-desc">Highest grade</option>
                 <option value="grade-asc">Lowest grade</option>
@@ -93,37 +101,42 @@ export default function DashboardOverview({
             </label>
           </div>
 
-          <div className="space-y-3">
+          <ul className="mt-2">
             {sortedCourses.map((course) => {
               const open = openCount(course.code);
               return (
-                <button
-                  key={course.code}
-                  type="button"
-                  onClick={() => onOpenCourse(course.code)}
-                  className="block min-h-11 w-full rounded-lg border border-green-100 bg-[#f8faf8] p-4 text-left transition-colors hover:border-green-400 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="text-xs font-semibold tracking-wide text-green-700">{course.code}</p>
-                      <h3 className="mt-1 break-words font-semibold text-green-950">{course.title}</h3>
-                      <p className="mt-0.5 text-sm text-green-700">{course.teacher}</p>
-                      <p className="mt-2 text-xs text-green-700">
-                        {open ? `${open} pending assignment${open === 1 ? "" : "s"}` : "All caught up"}
-                      </p>
-                    </div>
-                    <p className="shrink-0 text-lg font-semibold tabular-nums text-green-950">{course.grade}%</p>
-                  </div>
-                  <div className="mt-3">
-                    <Progress value={course.grade} className={course.color} />
-                  </div>
-                </button>
+                <li key={course.code}>
+                  <button
+                    type="button"
+                    onClick={() => onOpenCourse(course.code)}
+                    className="group -mx-3 block w-[calc(100%+1.5rem)] rounded-lg px-3 py-4 text-left transition-colors hover:bg-tint"
+                  >
+                    <span className="flex items-start justify-between gap-4">
+                      <span className="min-w-0">
+                        <span className="block break-words font-medium text-ink underline-offset-2 group-hover:underline">
+                          {course.title}
+                        </span>
+                        <span className="mt-0.5 block text-sm text-muted">{course.teacher}</span>
+                      </span>
+                      <span className="shrink-0 text-2xl font-medium tabular-nums text-ink">
+                        {course.grade}
+                        <span className="text-sm text-muted">%</span>
+                      </span>
+                    </span>
+                    <span className="mt-3 flex items-center gap-3">
+                      <span className="block flex-1">
+                        <Progress value={course.grade} />
+                      </span>
+                      <span className="shrink-0 text-xs text-muted">
+                        {open ? `${open} pending` : "All caught up"}
+                      </span>
+                    </span>
+                  </button>
+                </li>
               );
             })}
-          </div>
+          </ul>
         </section>
-
-        {children}
       </div>
     </>
   );

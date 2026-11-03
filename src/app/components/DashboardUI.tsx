@@ -26,25 +26,20 @@ export function Panel({
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-green-950/35 sm:justify-end">
-      <button
-        type="button"
-        aria-label="Close panel"
-        onClick={onClose}
-        className="absolute inset-0 cursor-default"
-      />
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink/30 sm:justify-end">
+      <button type="button" aria-label="Close panel" onClick={onClose} className="absolute inset-0 cursor-default" />
       <aside
         ref={ref}
         tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-label={label}
-        className="relative max-h-[92dvh] w-full overflow-y-auto overscroll-contain rounded-t-2xl border border-green-100 bg-white px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-6 shadow-2xl focus:outline-none sm:h-full sm:max-h-none sm:max-w-md sm:rounded-none sm:px-7 sm:py-8"
+        className="relative max-h-[92dvh] w-full overflow-y-auto overscroll-contain rounded-t-2xl border border-line bg-surface px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-6 focus:outline-none sm:h-full sm:max-h-none sm:max-w-md sm:rounded-none sm:border-y-0 sm:border-r-0 sm:px-8 sm:py-8"
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 min-h-11 rounded-lg px-3 text-sm font-medium text-green-800 hover:bg-green-50 sm:right-6 sm:top-6"
+          className="absolute right-3 top-3 min-h-11 rounded-lg px-3 text-sm font-medium text-muted transition-colors hover:bg-tint hover:text-ink sm:right-5 sm:top-5"
         >
           Close
         </button>
@@ -54,15 +49,20 @@ export function Panel({
   );
 }
 
-export function StatusBadge({ status }: { status: AssignmentStatus }) {
+export function StatusBadge({ status, overdue = false }: { status: AssignmentStatus; overdue?: boolean }) {
   const style = STATUS[status];
-  return <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${style.badge}`}>{style.label}</span>;
+  return (
+    <span className={`inline-flex shrink-0 items-center gap-1.5 text-sm ${overdue ? "font-medium text-alert" : "text-muted"}`}>
+      <span aria-hidden="true" className={`h-2 w-2 rounded-full ${overdue ? "bg-alert" : style.dot}`} />
+      {overdue ? "Overdue" : style.label}
+    </span>
+  );
 }
 
-export function Progress({ value, className = "bg-green-600" }: { value: number; className?: string }) {
+export function Progress({ value, className = "bg-accent" }: { value: number; className?: string }) {
   return (
-    <div className="h-2 w-full overflow-hidden rounded-full bg-green-100">
-      <div className={`h-full rounded-full transition-all ${className}`} style={{ width: `${value}%` }} />
-    </div>
+    <span className="block h-1.5 w-full overflow-hidden rounded-full bg-line">
+      <span className={`block h-full rounded-full transition-all ${className}`} style={{ width: `${value}%` }} />
+    </span>
   );
 }

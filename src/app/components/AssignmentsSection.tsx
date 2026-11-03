@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  BTN_PRIMARY,
   FILTERS,
   INPUT_CLASS,
   courses,
@@ -53,24 +54,23 @@ export default function AssignmentsSection({
   sectionRef: (element: HTMLElement | null) => void;
 }) {
   return (
-    <section ref={sectionRef} className="scroll-mt-4 rounded-xl border border-green-100 bg-white p-4 sm:p-5">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+    <section
+      ref={sectionRef}
+      className="scroll-mt-6 min-w-0 rounded-xl border border-line bg-surface p-4 sm:p-6"
+    >
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-baseline gap-3">
-          <h2 className="text-lg font-semibold text-green-950">Assignments</h2>
-          <span className="text-sm text-green-700">
+          <h2 className="text-lg font-semibold text-ink">Assignments</h2>
+          <span className="text-sm tabular-nums text-muted">
             {visible.length} of {assignments.length}
           </span>
         </div>
-        <button
-          type="button"
-          onClick={onAdd}
-          className="min-h-11 shrink-0 rounded-lg bg-green-800 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-green-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2"
-        >
+        <button type="button" onClick={onAdd} className={BTN_PRIMARY}>
           Add assignment
         </button>
       </div>
 
-      <div className="space-y-3">
+      <div className="mt-5 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto_auto]">
         <input
           type="search"
           value={query}
@@ -79,84 +79,86 @@ export default function AssignmentsSection({
           aria-label="Search assignments"
           className={INPUT_CLASS}
         />
-
-        <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by status">
-          {FILTERS.map((filter) => (
-            <button
-              key={filter.id}
-              type="button"
-              aria-pressed={statusFilter === filter.id}
-              onClick={() => onStatusFilterChange(filter.id)}
-              className={`min-h-10 rounded-full border px-3 py-1.5 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 ${
-                statusFilter === filter.id
-                  ? "border-green-700 bg-green-700 text-white"
-                  : "border-green-200 bg-white text-green-800 hover:bg-green-50"
-              }`}
-            >
-              {filter.label} <span className="tabular-nums opacity-80">{counts[filter.id]}</span>
-            </button>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 gap-2 min-[480px]:grid-cols-2">
-          <label className="text-sm text-green-800">
-            <span className="sr-only">Course</span>
-            <select
-              value={courseFilter}
-              onChange={(event) => {
-                const value = event.target.value;
-                onCourseFilterChange(value);
-              }}
-              className={INPUT_CLASS}
-            >
-              <option value="all">All courses</option>
-              {courses.map((course) => (
-                <option key={course.code} value={course.code}>
-                  {course.code}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="text-sm text-green-800">
-            <span className="sr-only">Sort</span>
-            <select
-              value={sort}
-              onChange={(event) => {
-                const value = event.target.value;
-                if (value === "due" || value === "priority") onSortChange(value);
-              }}
-              className={INPUT_CLASS}
-            >
-              <option value="due">Sort: due date</option>
-              <option value="priority">Sort: priority</option>
-            </select>
-          </label>
+        <div className="grid grid-cols-2 gap-2 sm:contents">
+          <select
+            aria-label="Filter by course"
+            value={courseFilter}
+            onChange={(event) => onCourseFilterChange(event.target.value)}
+            className={`${INPUT_CLASS} sm:w-auto`}
+          >
+            <option value="all">All courses</option>
+            {courses.map((course) => (
+              <option key={course.code} value={course.code}>
+                {course.code}
+              </option>
+            ))}
+          </select>
+          <select
+            aria-label="Sort assignments"
+            value={sort}
+            onChange={(event) => {
+              const value = event.target.value;
+              if (value === "due" || value === "priority") onSortChange(value);
+            }}
+            className={`${INPUT_CLASS} sm:w-auto`}
+          >
+            <option value="due">Sort by due date</option>
+            <option value="priority">Sort by priority</option>
+          </select>
         </div>
       </div>
 
+      <div
+        role="group"
+        aria-label="Filter by status"
+        className="-mx-4 mt-4 flex flex-wrap border-b border-line px-4 sm:-mx-6 sm:px-6"
+      >
+        {FILTERS.map((filter) => {
+          const active = statusFilter === filter.id;
+          return (
+            <button
+              key={filter.id}
+              type="button"
+              aria-pressed={active}
+              onClick={() => onStatusFilterChange(filter.id)}
+              className={`-mb-px shrink-0 border-b-2 py-3 pr-5 text-sm whitespace-nowrap transition-colors ${
+                active ? "border-accent font-semibold text-ink" : "border-transparent text-muted hover:text-ink"
+              }`}
+            >
+              {filter.label}
+              <span className="ml-1.5 tabular-nums text-muted">{counts[filter.id]}</span>
+            </button>
+          );
+        })}
+      </div>
+
       {!ready ? (
-        <p className="py-8 text-center text-sm text-green-700">Loading assignments…</p>
+        <p className="py-10 text-center text-sm text-muted">Loading assignments…</p>
       ) : visible.length === 0 ? (
-        <div className="py-8 text-center">
-          <p className="font-medium text-green-950">
+        <div className="py-10 text-center">
+          <p className="font-medium text-ink">
             {assignments.length === 0 ? "No assignments yet" : "No assignments match these filters"}
           </p>
-          <p className="mt-1 text-sm text-green-700">
+          <p className="mt-1 text-sm text-muted">
             {assignments.length === 0 ? "Add one to start tracking your work." : "Try a different status or course."}
           </p>
           {filtersActive && (
-            <button type="button" onClick={onResetFilters} className="mt-3 text-sm font-medium text-green-800 underline">
+            <button
+              type="button"
+              onClick={onResetFilters}
+              className="mt-3 text-sm font-medium text-accent underline underline-offset-4"
+            >
               Clear filters
             </button>
           )}
         </div>
       ) : (
-        <ul className="mt-3 divide-y divide-green-100">
+        <ul className="divide-y divide-line">
           {visible.map((assignment) => {
             const done = assignment.status !== "pending";
             const overdue = isOverdue(assignment);
             return (
-              <li key={assignment.id} className="flex min-w-0 items-start gap-3 py-4 first:pt-1 last:pb-1">
+              <li key={assignment.id} className="flex min-w-0 items-start gap-3 py-4">
                 <button
                   type="button"
                   role="checkbox"
@@ -168,31 +170,39 @@ export default function AssignmentsSection({
                   }
                   disabled={assignment.status === "review"}
                   onClick={() => onToggleDone(assignment)}
-                  className={`mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded border text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 disabled:cursor-not-allowed disabled:opacity-60 ${
-                    done ? "border-green-700 bg-green-700 text-white" : "border-green-400 bg-white"
+                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+                    done ? "border-accent bg-accent text-white" : "border-muted bg-surface hover:border-accent"
                   }`}
                 >
-                  {done ? "✓" : ""}
+                  {done && (
+                    <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                      <path d="M2.5 6.5l2.2 2.2 4.8-5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
                 </button>
                 <button
                   type="button"
                   onClick={() => onOpenAssignment(assignment.id)}
-                  className="flex min-w-0 flex-1 flex-col items-start justify-between gap-2 rounded-lg text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 min-[480px]:flex-row min-[480px]:items-center"
+                  className="group grid min-w-0 flex-1 grid-cols-[minmax(0,1fr)_auto] gap-x-4 rounded-md text-left"
                 >
-                  <div className="min-w-0">
-                    <p
-                      className={`font-medium ${
-                        assignment.status === "submitted" ? "text-green-700 line-through" : "text-green-950"
+                  <span className="min-w-0">
+                    <span
+                      className={`block break-words font-medium underline-offset-2 group-hover:underline ${
+                        assignment.status === "submitted" ? "text-muted line-through" : "text-ink"
                       }`}
                     >
                       {assignment.title}
-                    </p>
-                    <p className={`mt-1 text-sm ${overdue ? "font-medium text-red-700" : "text-green-700"}`}>
-                      {assignment.code} · {formatDue(assignment.due)}
-                      {overdue ? " · Overdue" : ""}
-                    </p>
-                  </div>
-                  <StatusBadge status={assignment.status} />
+                    </span>
+                    <span className="mt-0.5 block text-sm text-muted">{assignment.code}</span>
+                  </span>
+                  <span className="text-right">
+                    <span className={`block text-sm font-medium tabular-nums ${overdue ? "text-alert" : "text-ink"}`}>
+                      {formatDue(assignment.due)}
+                    </span>
+                    <span className="mt-0.5 flex justify-end">
+                      <StatusBadge status={assignment.status} overdue={overdue} />
+                    </span>
+                  </span>
                 </button>
               </li>
             );
